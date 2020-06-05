@@ -13,8 +13,8 @@ public class MySqlCon {
                         + "user=sa;"
                         + "password=Flame7072000NickB;";
 
-        try (Connection connection = DriverManager.getConnection(connectionUrl);) {
-            if (connection != null)
+        try {
+                Connection connection = DriverManager.getConnection(connectionUrl);
                 return connection;
         }
         catch (SQLException e) {

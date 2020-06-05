@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.InputExercisesController;
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -21,23 +23,25 @@ public class ExerciseTracker {
             repsInt = Integer.parseInt(reps);
             weightDouble = Double.parseDouble(weight);
             dateString = date.toString();
+
+            String values = String.format("VALUES('%s','%d','%f','%s')", exercise, repsInt,
+                    weightDouble, dateString);
+            String query = "INSERT INTO ExerciseLogs(ExerciseName, Reps, Weight, Date) " + values;
+            Connection connection = null;
+            Statement statement = null;
+            try {
+                connection = MySqlCon.getConnection();
+                statement = connection.createStatement();
+                statement.executeUpdate(query);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                statement.close();
+                connection.close();
+            }
+            InputExercisesController.displayPopUp();
         } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-        String values = String.format("VALUES('%s','%d','%f','%s')", exercise, repsInt,
-                weightDouble, dateString);
-        String query = "INSERT INTO ExerciseLogs(ExerciseName, Reps, Weight, Date) " + values;
-        Connection connection = null;
-        Statement statement = null;
-        try {
-            connection = MySqlCon.getConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            statement.close();
-            connection.close();
+            InputExercisesController.displayError();
         }
     }
 }
