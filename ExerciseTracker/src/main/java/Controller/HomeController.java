@@ -2,6 +2,7 @@ package Controller;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -18,6 +19,8 @@ import java.sql.SQLException;
 
 public class HomeController {
 
+    @FXML private Button inputExercisesButton;
+
     public void displayInputExercises(javafx.event.ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("InputExercises.fxml"));
@@ -28,6 +31,12 @@ public class HomeController {
 
         window.setScene(scene);
         window.show();
+    }
+
+    public void displayStatistics(javafx.event.ActionEvent event) throws IOException {
+        Stage stage = (Stage) inputExercisesButton.getScene().getWindow();
+        stage.close();
+        StatisticsController.displayStatistics();
     }
 
     public void clearDatabase(javafx.event.ActionEvent event) throws IOException {

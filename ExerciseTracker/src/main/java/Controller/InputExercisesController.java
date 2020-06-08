@@ -50,7 +50,7 @@ public class InputExercisesController implements Initializable {
             }
         });
 
-        List<String> exercisesList = new ArrayList<String>() {{
+        List<String> exercisesList = new ArrayList<>() {{
             add("Bench Press");
             add("Squat");
             add("Deadlift");
@@ -61,10 +61,10 @@ public class InputExercisesController implements Initializable {
 
 
     public static void displayPopUp() {
-        Stage popupwindow = new Stage();
+        Stage popupWindow = new Stage();
 
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Confirmation Button");
+        popupWindow.initModality(Modality.APPLICATION_MODAL);
+        popupWindow.setTitle("Confirmation Button");
 
         Label label1= new Label("Exercise Recorded");
 
@@ -76,16 +76,16 @@ public class InputExercisesController implements Initializable {
 
         Scene scene1= new Scene(layout, 200, 200);
 
-        popupwindow.setScene(scene1);
+        popupWindow.setScene(scene1);
 
-        popupwindow.showAndWait();
+        popupWindow.showAndWait();
     }
 
     public static void displayError() {
-        Stage popupwindow = new Stage();
+        Stage popupWindow = new Stage();
 
-        popupwindow.initModality(Modality.APPLICATION_MODAL);
-        popupwindow.setTitle("Error Message");
+        popupWindow.initModality(Modality.APPLICATION_MODAL);
+        popupWindow.setTitle("Error Message");
 
         Label label1= new Label("Invalid Inputs");
 
@@ -97,9 +97,9 @@ public class InputExercisesController implements Initializable {
 
         Scene scene1= new Scene(layout, 200, 200);
 
-        popupwindow.setScene(scene1);
+        popupWindow.setScene(scene1);
 
-        popupwindow.showAndWait();
+        popupWindow.showAndWait();
     }
 
     public void goBack(javafx.event.ActionEvent event) throws IOException {
