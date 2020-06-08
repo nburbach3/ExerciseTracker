@@ -42,6 +42,7 @@
                     </font>
                 </Label>
                 <Button fx:id="submitButton" layoutX="225.0" layoutY="140.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Submit" textFill="WHITE" />
+            <Button layoutX="24.0" layoutY="224.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Go Back" textFill="WHITE" onAction="#goBack" />
             </children>
         </AnchorPane>
     </center>
