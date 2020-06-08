@@ -68,6 +68,8 @@ public class HomeController {
                 try {
                     Model.ExerciseTracker.clearDatabase();
                     label1.setText("The database has been cleared.");
+                    layout.getChildren().remove(clearButton);
+                    popupwindow.setTitle("");
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
