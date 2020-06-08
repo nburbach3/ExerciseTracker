@@ -44,4 +44,20 @@ public class ExerciseTracker {
             InputExercisesController.displayError();
         }
     }
+
+    public static void clearDatabase() throws SQLException {
+        String query = "DELETE FROM ExerciseLogs";
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = MySqlCon.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            statement.close();
+            connection.close();
+        }
+    }
 }

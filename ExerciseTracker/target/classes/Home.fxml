@@ -21,8 +21,9 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: light-blue;" BorderPane.alignment="CENTER">
             <children>
-                <Button layoutX="50.0" layoutY="200.0" mnemonicParsing="false" style="-fx-background-color: black;" text="Enter Exercise Info" textFill="WHITE" onAction="#displayInputExercises"/>
+                <Button layoutX="50.0" layoutY="200.0" mnemonicParsing="false" onAction="#displayInputExercises" style="-fx-background-color: black;" text="Enter Exercise Info" textFill="WHITE" />
                 <Button layoutX="240.0" layoutY="200.0" mnemonicParsing="false" style="-fx-background-color: black;" text="View Statistics" textFill="WHITE" />
+                <Button layoutX="144.0" layoutY="283.0" mnemonicParsing="false" onAction="#clearDatabase" style="-fx-background-color: black;" text="Clear Database" textFill="WHITE" />
             </children>
         </AnchorPane>
     </center>

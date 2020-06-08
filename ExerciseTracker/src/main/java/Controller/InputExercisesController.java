@@ -36,11 +36,6 @@ public class InputExercisesController implements Initializable {
                 String exerciseSelected = exerciseCombo.getValue().toString();
                 String repsText = reps.getText();
                 String weightText = weight.getText();
-                /*if (repsText.equals("")) {
-                    repsText = "0";
-                } else if (weightText.equals("")) {
-                    weightText.equals("0");
-                }*/
                 long millis = System.currentTimeMillis();
                 java.sql.Date date = new java.sql.Date(millis);
                 try {
