@@ -10,7 +10,7 @@ public class MySqlCon {
     public static Connection getConnection() {
         String connectionUrl =
                 "jdbc:sqlserver://localhost:1433;"
-                        + "databaseName=DATABASENAME;"
+                        + "databaseName=ExerciseTracker;"
                         + "user=USERNAME;"
                         + "password=PASSWORD;";
 
