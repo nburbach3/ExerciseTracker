@@ -1,7 +1,5 @@
 package Controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -21,6 +19,7 @@ public class HomeController {
 
     @FXML private Button inputExercisesButton;
 
+    //Displays the page where the user can input exercise information
     public void displayInputExercises(javafx.event.ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("InputExercises.fxml"));
@@ -34,19 +33,22 @@ public class HomeController {
         window.show();
     }
 
-    public void displayStatistics(javafx.event.ActionEvent event) throws IOException {
+    //Displays yearly statistics page
+    public void displayStatistics() {
         Stage stage = (Stage) inputExercisesButton.getScene().getWindow();
         stage.close();
         StatisticsController.displayStatistics();
     }
 
-    public void displayMonthlyStatistic(javafx.event.ActionEvent event) throws IOException {
+    //Displays monthly statistics page
+    public void displayMonthlyStatistic() {
         Stage stage = (Stage) inputExercisesButton.getScene().getWindow();
         stage.close();
         StatisticsController.displayMonthStatistics();
     }
 
-    public void clearDatabase(javafx.event.ActionEvent event) throws IOException {
+    //Clears database of all information
+    public void clearDatabase() {
         Stage popupwindow = new Stage();
 
         popupwindow.initModality(Modality.APPLICATION_MODAL);
@@ -69,17 +71,14 @@ public class HomeController {
 
         popupwindow.show();
 
-        clearButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    Model.ExerciseTracker.clearDatabase();
-                    label1.setText("The database has been cleared.");
-                    layout.getChildren().remove(clearButton);
-                    popupwindow.setTitle("");
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        clearButton.setOnAction(event1 -> {
+            try {
+                Model.ExerciseTracker.clearDatabase();
+                label1.setText("The database has been cleared.");
+                layout.getChildren().remove(clearButton);
+                popupwindow.setTitle("");
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
     }

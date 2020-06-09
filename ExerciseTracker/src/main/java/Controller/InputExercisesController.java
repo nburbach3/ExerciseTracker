@@ -1,6 +1,5 @@
 package Controller;
 
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,7 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.event.ActionEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -35,23 +33,22 @@ public class InputExercisesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String exerciseSelected = exerciseCombo.getValue().toString();
-                String repsText = reps.getText();
-                String weightText = weight.getText();
-                String setsText = sets.getText();
-                long millis = System.currentTimeMillis();
-                java.sql.Date date = new java.sql.Date(millis);
-                try {
-                    Model.ExerciseTracker.addExercise(exerciseSelected, repsText, weightText, setsText, date);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        //Submits data into the database
+        submitButton.setOnAction(event -> {
+            String exerciseSelected = exerciseCombo.getValue().toString();
+            String repsText = reps.getText();
+            String weightText = weight.getText();
+            String setsText = sets.getText();
+            long millis = System.currentTimeMillis();
+            java.sql.Date date = new java.sql.Date(millis);
+            try {
+                Model.ExerciseTracker.addExercise(exerciseSelected, repsText, weightText, setsText, date);
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
+        //Initializes what exercises the user can choose from
         List<String> exercisesList = new ArrayList<>() {{
             add("Bench Press");
             add("Squat");
@@ -61,7 +58,7 @@ public class InputExercisesController implements Initializable {
         exerciseCombo.getSelectionModel().select("Bench Press");
     }
 
-
+    //Displays a popup message telling the user that the submission was successful
     public static void displayPopUp() {
         Stage popupWindow = new Stage();
 
@@ -84,6 +81,7 @@ public class InputExercisesController implements Initializable {
         popupWindow.showAndWait();
     }
 
+    //Displays a popup message telling the user that the submission failed
     public static void displayError() {
         Stage popupWindow = new Stage();
 
@@ -106,6 +104,7 @@ public class InputExercisesController implements Initializable {
         popupWindow.showAndWait();
     }
 
+    //Goes back to the home page
     public void goBack(javafx.event.ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getClassLoader().getResource("Home.fxml"));

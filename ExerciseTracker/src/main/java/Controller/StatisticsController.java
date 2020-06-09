@@ -29,7 +29,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -38,6 +37,7 @@ public class StatisticsController {
     @FXML private static ComboBox exerciseCombo;
     @FXML private static AnchorPane anchorPane;
 
+    //Initializes FXML objects and displays the yearly statistics page
     public static void displayStatistics() {
         Stage stage = new Stage();
         stage.setTitle("Statistics");
@@ -93,25 +93,23 @@ public class StatisticsController {
         anchorPane.getChildren().addAll(titleLabel, exerciseCombo, exerciseLabel, submitButton, goBackButton);
         borderPane.getChildren().add(anchorPane);
 
-
+        //Sets the styling for the yearly graph
         Scene scene = new Scene(borderPane);
         scene.getStylesheets().add("ChartStyleSheet.css");
         stage.setScene(scene);
         stage.show();
 
-
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    displayGraph();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        //Calls method to display yearly graph
+        submitButton.setOnAction(event -> {
+            try {
+                displayGraph();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
-        goBackButton.setOnAction(new EventHandler<ActionEvent>() {
+        //Goes back to the home page
+        goBackButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 FXMLLoader loader = new FXMLLoader();
@@ -124,7 +122,7 @@ public class StatisticsController {
                 }
 
                 Scene scene = new Scene(parent);
-                Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
                 window.setScene(scene);
                 window.centerOnScreen();
@@ -133,7 +131,9 @@ public class StatisticsController {
         });
     }
 
+    //Displays graph for the current year
     public static void displayGraph() throws SQLException {
+        //Sets the x axis labels to months
         ObservableList<String> months = FXCollections.observableArrayList();
         months.addAll("Jan",
                 "Feb",
@@ -152,7 +152,7 @@ public class StatisticsController {
         xAxis.setLabel("Month");
 
         final LineChart<String, Number> exerciseGraph = new LineChart<>(xAxis, yAxis);
-        exerciseGraph.setTitle("Progress For The Past Year");
+        exerciseGraph.setTitle("Progress For The Current Year");
         String exercise = exerciseCombo.getValue().toString();
         ArrayList<String> dates = ExerciseTracker.getDateInfo(exercise);
         ArrayList<Double> weights = ExerciseTracker.getWeightInfo(exercise);
@@ -165,6 +165,7 @@ public class StatisticsController {
         XYChart.Series weightSeries = new XYChart.Series();
         weightSeries.setName("Weight");
 
+        //Determines where to put each data point on the graph
         int count = 0;
         for (double weight : weights) {
             int calculatedWeight = calculateWeight(weight, reps.get(count), sets.get(count));
@@ -221,6 +222,7 @@ public class StatisticsController {
         anchorPane.getChildren().add(exerciseGraph);
     }
 
+    //Initializes FXML objects and displays the monthly statistics page
     public static void displayMonthStatistics() {
         Stage stage = new Stage();
         stage.setTitle("Statistics");
@@ -271,30 +273,26 @@ public class StatisticsController {
         goBackButton.setStyle("-fx-background-color: black;");
         goBackButton.setTextFill(Paint.valueOf("WHITE"));
 
-
-
         anchorPane.getChildren().addAll(titleLabel, exerciseCombo, exerciseLabel, submitButton, goBackButton);
         borderPane.getChildren().add(anchorPane);
 
-
+        //Gives the monthly graph some styling and shows the stage
         Scene scene = new Scene(borderPane);
         scene.getStylesheets().add("ChartStyleSheet.css");
         stage.setScene(scene);
         stage.show();
 
-
-        submitButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    displayMonthGraph();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+        //Calls method to display monthly graph
+        submitButton.setOnAction(event -> {
+            try {
+                displayMonthGraph();
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
 
-        goBackButton.setOnAction(new EventHandler<ActionEvent>() {
+        //Goes back to the home page
+        goBackButton.setOnAction(new EventHandler<>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 FXMLLoader loader = new FXMLLoader();
@@ -306,8 +304,9 @@ public class StatisticsController {
                     e.printStackTrace();
                 }
 
+                assert parent != null;
                 Scene scene = new Scene(parent);
-                Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+                Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
 
                 window.setScene(scene);
                 window.centerOnScreen();
@@ -316,6 +315,7 @@ public class StatisticsController {
         });
     }
 
+    //displays the graph for the current month
     public static void displayMonthGraph() throws SQLException {
         final NumberAxis xAxis = new NumberAxis();
         xAxis.setAutoRanging(false);
@@ -323,6 +323,8 @@ public class StatisticsController {
         xAxis.setTickUnit(1);
         Calendar calendar = Calendar.getInstance();
         String month = new SimpleDateFormat("MMM").format(calendar.getTime());
+
+        //Setting the range of the x axis based on the current month
         switch (month) {
             case "Jan":
             case "Mar":
@@ -362,6 +364,7 @@ public class StatisticsController {
         XYChart.Series weightSeries = new XYChart.Series();
         weightSeries.setName("Weight");
 
+        //Adds data points to the graph for the current month and exercise selected
         int count = 0;
         for (double weight : weights) {
             int calculatedWeight = calculateWeight(weight, reps.get(count), sets.get(count));
@@ -380,6 +383,7 @@ public class StatisticsController {
         anchorPane.getChildren().add(exerciseGraph);
     }
 
+    //Function to determine if the year is a leap year
     public static Boolean isLeapYear(int year) {
         boolean isLeap;
 
@@ -387,10 +391,7 @@ public class StatisticsController {
         {
             if( year % 100 == 0)
             {
-                if ( year % 400 == 0)
-                    isLeap = true;
-                else
-                    isLeap = false;
+                isLeap = year % 400 == 0;
             }
             else
                 isLeap = true;
@@ -401,10 +402,10 @@ public class StatisticsController {
         return isLeap;
     }
 
+    //Formula to calculate weight lifted based on weight, reps, and sets
     public static int calculateWeight(double weight, double reps, int sets) {
         double calculatedWeight = weight * (reps / (reps - 1));
-        int calculatedWeightInt = (int)(calculatedWeight + (calculatedWeight/20) * sets);
-        return calculatedWeightInt;
+        return (int)(calculatedWeight + (calculatedWeight/20) * sets);
     }
 
 }

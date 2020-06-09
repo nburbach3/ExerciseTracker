@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+//This class is to connect to the local server and database using JDBC
 public class MySqlCon {
 
     public static Connection getConnection() {
@@ -14,8 +15,7 @@ public class MySqlCon {
                         + "password=Flame7072000NickB;";
 
         try {
-                Connection connection = DriverManager.getConnection(connectionUrl);
-                return connection;
+            return DriverManager.getConnection(connectionUrl);
         }
         catch (SQLException e) {
             e.printStackTrace();

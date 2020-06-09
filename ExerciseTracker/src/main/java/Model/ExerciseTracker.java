@@ -5,8 +5,10 @@ import Controller.InputExercisesController;
 import java.sql.*;
 import java.util.ArrayList;
 
+//All SQL queries will be run through this class
 public class ExerciseTracker {
 
+    //Adds an exercise to the database
     public static void addExercise(String exercise, String reps, String weight, String sets, Date date) throws SQLException {
 
         int repsInt = 0;
@@ -27,11 +29,13 @@ public class ExerciseTracker {
             Statement statement = null;
             try {
                 connection = MySqlCon.getConnection();
+                assert connection != null;
                 statement = connection.createStatement();
                 statement.executeUpdate(query);
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
+                assert statement != null;
                 statement.close();
                 connection.close();
             }
@@ -41,30 +45,39 @@ public class ExerciseTracker {
         }
     }
 
+    //Clears the database
     public static void clearDatabase() throws SQLException {
         String query = "DELETE FROM ExerciseLogs";
         Connection connection = null;
         Statement statement = null;
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             statement.executeUpdate(query);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
     }
 
+    //Gets all dates for the current year
     public static ArrayList<String> getDateInfo(String exercise) throws SQLException {
-        String query = "SELECT Date FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "'";
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String year = dateParts[0];
+        String query = "SELECT Date FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + year + "%'";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet;
         ArrayList<String> dateList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -73,20 +86,27 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return dateList;
     }
 
+    //Gets all reps for the current year
     public static ArrayList<Integer> getRepsInfo(String exercise) throws SQLException {
-        String query = "SELECT Reps FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "'";
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String year = dateParts[0];
+        String query = "SELECT Reps FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + year + "%'";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet;
         ArrayList<Integer> repsList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -95,20 +115,27 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return repsList;
     }
 
+    //Gets all weights for the current year
     public static ArrayList<Double> getWeightInfo(String exercise) throws SQLException {
-        String query = "SELECT Weight FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "'";
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String year = dateParts[0];
+        String query = "SELECT Weight FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + year + "%'";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet;
         ArrayList<Double> weightList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -117,20 +144,27 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return weightList;
     }
 
+    //Gets all sets for the current year
     public static ArrayList<Integer> getSetsInfo(String exercise) throws SQLException {
-        String query = "SELECT Sets FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "'";
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String year = dateParts[0];
+        String query = "SELECT Sets FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + year + "%'";
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet;
         ArrayList<Integer> setsList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -139,12 +173,14 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return setsList;
     }
 
+    //Gets all dates for the current month
     public static ArrayList<String> getMonthDateInfo(String exercise) throws SQLException {
         long millis = System.currentTimeMillis();
         java.sql.Date date = new java.sql.Date(millis);
@@ -157,6 +193,7 @@ public class ExerciseTracker {
         ArrayList<String> dateList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -165,12 +202,14 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return dateList;
     }
 
+    //Gets all weights for the current month
     public static ArrayList<Double> getMonthWeightInfo(String exercise) throws SQLException {
         long millis = System.currentTimeMillis();
         java.sql.Date date = new java.sql.Date(millis);
@@ -183,6 +222,7 @@ public class ExerciseTracker {
         ArrayList<Double> weightList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -191,12 +231,14 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return weightList;
     }
 
+    //Gets all reps for the current month
     public static ArrayList<Integer> getMonthRepsInfo(String exercise) throws SQLException {
         long millis = System.currentTimeMillis();
         java.sql.Date date = new java.sql.Date(millis);
@@ -209,6 +251,7 @@ public class ExerciseTracker {
         ArrayList<Integer> repsList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -217,12 +260,14 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
         return repsList;
     }
 
+    //Gets all sets for the current month
     public static ArrayList<Integer> getMonthSetsInfo(String exercise) throws SQLException {
         long millis = System.currentTimeMillis();
         java.sql.Date date = new java.sql.Date(millis);
@@ -235,6 +280,7 @@ public class ExerciseTracker {
         ArrayList<Integer> setsList = new ArrayList<>();
         try {
             connection = MySqlCon.getConnection();
+            assert connection != null;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -243,6 +289,7 @@ public class ExerciseTracker {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+            assert statement != null;
             statement.close();
             connection.close();
         }
