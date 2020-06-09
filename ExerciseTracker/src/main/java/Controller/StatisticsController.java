@@ -70,7 +70,7 @@ public class StatisticsController {
             add("Leg Curl");
             add("Calf Raise");
             add("Chest Fly");
-            add("push-up");
+            add("Push-up");
             add("Lat Pull-Down");
             add("Pull-Up");
             add("Bent-Over Row");
@@ -272,7 +272,7 @@ public class StatisticsController {
             add("Leg Curl");
             add("Calf Raise");
             add("Chest Fly");
-            add("push-up");
+            add("Push-up");
             add("Lat Pull-Down");
             add("Pull-Up");
             add("Bent-Over Row");
