@@ -65,12 +65,12 @@ public class StatisticsController {
         exerciseCombo = new ComboBox();
         exerciseCombo.getItems().addAll(exercisesList);
         exerciseCombo.getSelectionModel().select("Bench Press");
-        exerciseCombo.setLayoutX(270);
+        exerciseCombo.setLayoutX(275);
         exerciseCombo.setLayoutY(519);
         exerciseCombo.setPrefWidth(150);
 
         Label exerciseLabel = new Label("Exercise");
-        exerciseLabel.setLayoutX(315);
+        exerciseLabel.setLayoutX(320);
         exerciseLabel.setLayoutY(490);
         exerciseLabel.setFont(new Font("SansSerifBold", 16));
 
@@ -93,6 +93,7 @@ public class StatisticsController {
 
 
         Scene scene = new Scene(borderPane);
+        scene.getStylesheets().add("ChartStyleSheet.css");
         stage.setScene(scene);
         stage.show();
 
@@ -154,17 +155,18 @@ public class StatisticsController {
         ArrayList<String> dates = ExerciseTracker.getDateInfo(exercise);
         ArrayList<Double> weights = ExerciseTracker.getWeightInfo(exercise);
         ArrayList<Integer> reps = ExerciseTracker.getRepsInfo(exercise);
+        ArrayList<Integer> sets = ExerciseTracker.getSetsInfo(exercise);
 
 
 
 
         XYChart.Series weightSeries = new XYChart.Series();
-        XYChart.Series repSeries = new XYChart.Series();
         weightSeries.setName("Weight");
-        repSeries.setName("Reps");
 
         int count = 0;
         for (double weight : weights) {
+            double calculatedWeight = weight * ((double)reps.get(count) / (reps.get(count) - 1));
+            calculatedWeight = (int)(calculatedWeight + (calculatedWeight/20) * sets.get(count));
             String date = dates.get(count);
             String[] dateParts = date.split("-");
             String monthNumber = dateParts[1];
@@ -207,7 +209,7 @@ public class StatisticsController {
                     month = "Dec";
                     break;
             }
-            weightSeries.getData().add(new XYChart.Data(month, weight));
+            weightSeries.getData().add(new XYChart.Data(month, calculatedWeight));
             count++;
         }
         exerciseGraph.getData().add(weightSeries);

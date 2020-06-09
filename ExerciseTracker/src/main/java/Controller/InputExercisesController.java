@@ -30,6 +30,7 @@ public class InputExercisesController implements Initializable {
     @FXML private TextField reps;
     @FXML private TextField weight;
     @FXML private Button submitButton;
+    @FXML private TextField sets;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -40,10 +41,11 @@ public class InputExercisesController implements Initializable {
                 String exerciseSelected = exerciseCombo.getValue().toString();
                 String repsText = reps.getText();
                 String weightText = weight.getText();
+                String setsText = sets.getText();
                 long millis = System.currentTimeMillis();
                 java.sql.Date date = new java.sql.Date(millis);
                 try {
-                    Model.ExerciseTracker.addExercise(exerciseSelected, repsText, weightText, date);
+                    Model.ExerciseTracker.addExercise(exerciseSelected, repsText, weightText, setsText, date);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -77,6 +79,7 @@ public class InputExercisesController implements Initializable {
         Scene scene1= new Scene(layout, 200, 200);
 
         popupWindow.setScene(scene1);
+        popupWindow.centerOnScreen();
 
         popupWindow.showAndWait();
     }
@@ -98,6 +101,7 @@ public class InputExercisesController implements Initializable {
         Scene scene1= new Scene(layout, 200, 200);
 
         popupWindow.setScene(scene1);
+        popupWindow.centerOnScreen();
 
         popupWindow.showAndWait();
     }
@@ -111,6 +115,7 @@ public class InputExercisesController implements Initializable {
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
         window.setScene(scene);
+        window.centerOnScreen();
         window.show();
     }
 

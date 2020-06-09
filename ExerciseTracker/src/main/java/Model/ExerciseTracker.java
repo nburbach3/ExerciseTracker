@@ -7,24 +7,22 @@ import java.util.ArrayList;
 
 public class ExerciseTracker {
 
-    public static void addExercise(String exercise, String reps, String weight, Date date) throws SQLException {
+    public static void addExercise(String exercise, String reps, String weight, String sets, Date date) throws SQLException {
 
         int repsInt = 0;
         double weightDouble = 0;
+        int setsInt = 0;
         String dateString = "";
 
-        if (reps == null || weight == null) {
-            //TODO Add error popup that doesn't quit program
-            return;
-        }
         try {
             repsInt = Integer.parseInt(reps);
             weightDouble = Double.parseDouble(weight);
+            setsInt = Integer.parseInt(sets);
             dateString = date.toString();
 
-            String values = String.format("VALUES('%s','%d','%f','%s')", exercise, repsInt,
-                    weightDouble, dateString);
-            String query = "INSERT INTO ExerciseLogs(ExerciseName, Reps, Weight, Date) " + values;
+            String values = String.format("VALUES('%s','%d','%f','%d', '%s')", exercise, repsInt,
+                    weightDouble, setsInt, dateString);
+            String query = "INSERT INTO ExerciseLogs(ExerciseName, Reps, Weight, Sets, Date) " + values;
             Connection connection = null;
             Statement statement = null;
             try {
@@ -123,5 +121,27 @@ public class ExerciseTracker {
             connection.close();
         }
         return weightList;
+    }
+
+    public static ArrayList<Integer> getSetsInfo(String exercise) throws SQLException {
+        String query = "SELECT Sets FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "'";
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet;
+        ArrayList<Integer> setsList = new ArrayList<>();
+        try {
+            connection = MySqlCon.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                setsList.add(resultSet.getInt("Sets"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            statement.close();
+            connection.close();
+        }
+        return setsList;
     }
 }
