@@ -17,8 +17,8 @@ CREATE TABLE Exerciselogs (
 3. Clone repository and import project into IDE
 4. Copy MySqlCon-TEMPLATE to Model folder in project, replace USERNAME and PASSWORD with your SQL Server details
 5. Make sure you have the correct external libraries:
-   JDK 11.0.5
-   mssql-jdbc-8.2.2.jre11
+   - JDK 11.0.5
+   - mssql-jdbc-8.2.2.jre11
    
 
 Run Instructions:
