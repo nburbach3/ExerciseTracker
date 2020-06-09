@@ -27,8 +27,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 public class StatisticsController {
@@ -48,7 +50,7 @@ public class StatisticsController {
         anchorPane = new AnchorPane();
         anchorPane.setPrefHeight(200);
         anchorPane.setPrefWidth(200);
-        anchorPane.setStyle("-fx-background-color: light-blue;");
+        anchorPane.setStyle("-fx-background-color: #3390FF;");
         BorderPane.setAlignment(anchorPane, Pos.CENTER);
 
         Label titleLabel = new Label("View Statistics");
@@ -165,8 +167,7 @@ public class StatisticsController {
 
         int count = 0;
         for (double weight : weights) {
-            double calculatedWeight = weight * ((double)reps.get(count) / (reps.get(count) - 1));
-            calculatedWeight = (int)(calculatedWeight + (calculatedWeight/20) * sets.get(count));
+            int calculatedWeight = calculateWeight(weight, reps.get(count), sets.get(count));
             String date = dates.get(count);
             String[] dateParts = date.split("-");
             String monthNumber = dateParts[1];
@@ -215,7 +216,195 @@ public class StatisticsController {
         exerciseGraph.getData().add(weightSeries);
         exerciseGraph.setLayoutX(95);
         exerciseGraph.setLayoutY(80);
+
+        anchorPane.getChildren().remove(anchorPane.lookup(".chart"));
         anchorPane.getChildren().add(exerciseGraph);
+    }
+
+    public static void displayMonthStatistics() {
+        Stage stage = new Stage();
+        stage.setTitle("Statistics");
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setPrefHeight(600);
+        borderPane.setPrefWidth(700);
+        borderPane.setStyle("-fx-background-color: #3390FF;");
+
+        anchorPane = new AnchorPane();
+        anchorPane.setPrefHeight(200);
+        anchorPane.setPrefWidth(200);
+        anchorPane.setStyle("-fx-background-color: #3390FF;");
+        BorderPane.setAlignment(anchorPane, Pos.CENTER);
+
+        Label titleLabel = new Label("View Statistics");
+        titleLabel.setPadding(new Insets(10, 0, 0, 0));
+        titleLabel.setFont(new Font("PT Serif Bold", 18.0));
+        titleLabel.setLayoutX(285);
+        titleLabel.setLayoutY(10);
+
+        List<String> exercisesList = new ArrayList<>() {{
+            add("Bench Press");
+            add("Squat");
+            add("Deadlift");
+        }};
+        exerciseCombo = new ComboBox();
+        exerciseCombo.getItems().addAll(exercisesList);
+        exerciseCombo.getSelectionModel().select("Bench Press");
+        exerciseCombo.setLayoutX(275);
+        exerciseCombo.setLayoutY(519);
+        exerciseCombo.setPrefWidth(150);
+
+        Label exerciseLabel = new Label("Exercise");
+        exerciseLabel.setLayoutX(320);
+        exerciseLabel.setLayoutY(490);
+        exerciseLabel.setFont(new Font("SansSerifBold", 16));
+
+        Button submitButton = new Button("Submit");
+        submitButton.setLayoutX(600);
+        submitButton.setLayoutY(519);
+        submitButton.setStyle("-fx-background-color: black;");
+        submitButton.setTextFill(Paint.valueOf("WHITE"));
+
+        Button goBackButton = new Button("Go Back");
+        goBackButton.setLayoutX(28);
+        goBackButton.setLayoutY(519);
+        goBackButton.setStyle("-fx-background-color: black;");
+        goBackButton.setTextFill(Paint.valueOf("WHITE"));
+
+
+
+        anchorPane.getChildren().addAll(titleLabel, exerciseCombo, exerciseLabel, submitButton, goBackButton);
+        borderPane.getChildren().add(anchorPane);
+
+
+        Scene scene = new Scene(borderPane);
+        scene.getStylesheets().add("ChartStyleSheet.css");
+        stage.setScene(scene);
+        stage.show();
+
+
+        submitButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                try {
+                    displayMonthGraph();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        goBackButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                FXMLLoader loader = new FXMLLoader();
+                loader.setLocation(getClass().getClassLoader().getResource("Home.fxml"));
+                Parent parent = null;
+                try {
+                    parent = loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Scene scene = new Scene(parent);
+                Stage window = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+
+                window.setScene(scene);
+                window.centerOnScreen();
+                window.show();
+            }
+        });
+    }
+
+    public static void displayMonthGraph() throws SQLException {
+        final NumberAxis xAxis = new NumberAxis();
+        xAxis.setAutoRanging(false);
+        xAxis.setLowerBound(1);
+        xAxis.setTickUnit(1);
+        Calendar calendar = Calendar.getInstance();
+        String month = new SimpleDateFormat("MMM").format(calendar.getTime());
+        switch (month) {
+            case "Jan":
+            case "Mar":
+            case "May":
+            case "Jul":
+            case "Aug":
+            case "Oct":
+            case "Dec":
+                xAxis.setUpperBound(31);
+                break;
+            case "Apr":
+            case "Jun":
+            case "Sep":
+            case "Nov":
+                xAxis.setUpperBound(30);
+                break;
+            case "Feb":
+                int year = Calendar.getInstance().get(Calendar.YEAR);
+                if (isLeapYear(year))
+                    xAxis.setUpperBound(29);
+                else
+                    xAxis.setUpperBound(28);
+                break;
+        }
+        final NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("Day of Month");
+
+        final LineChart<Number, Number> exerciseGraph = new LineChart<>(xAxis, yAxis);
+        exerciseGraph.setTitle("Progress For The Current Month");
+        String exercise = exerciseCombo.getValue().toString();
+        ArrayList<String> dates = ExerciseTracker.getMonthDateInfo(exercise);
+        ArrayList<Double> weights = ExerciseTracker.getMonthWeightInfo(exercise);
+        ArrayList<Integer> reps = ExerciseTracker.getMonthRepsInfo(exercise);
+        ArrayList<Integer> sets = ExerciseTracker.getMonthSetsInfo(exercise);
+
+
+        XYChart.Series weightSeries = new XYChart.Series();
+        weightSeries.setName("Weight");
+
+        int count = 0;
+        for (double weight : weights) {
+            int calculatedWeight = calculateWeight(weight, reps.get(count), sets.get(count));
+            String date = dates.get(count);
+            String[] dateParts = date.split("-");
+            String dayNumber = dateParts[2];
+            int dayInt = Integer.parseInt(dayNumber);
+            weightSeries.getData().add(new XYChart.Data(dayInt, calculatedWeight));
+            count++;
+        }
+        exerciseGraph.getData().add(weightSeries);
+        exerciseGraph.setLayoutX(95);
+        exerciseGraph.setLayoutY(80);
+
+        anchorPane.getChildren().remove(anchorPane.lookup(".chart"));
+        anchorPane.getChildren().add(exerciseGraph);
+    }
+
+    public static Boolean isLeapYear(int year) {
+        boolean isLeap;
+
+        if(year % 4 == 0)
+        {
+            if( year % 100 == 0)
+            {
+                if ( year % 400 == 0)
+                    isLeap = true;
+                else
+                    isLeap = false;
+            }
+            else
+                isLeap = true;
+        }
+        else {
+            isLeap = false;
+        }
+        return isLeap;
+    }
+
+    public static int calculateWeight(double weight, double reps, int sets) {
+        double calculatedWeight = weight * (reps / (reps - 1));
+        int calculatedWeightInt = (int)(calculatedWeight + (calculatedWeight/20) * sets);
+        return calculatedWeightInt;
     }
 
 }

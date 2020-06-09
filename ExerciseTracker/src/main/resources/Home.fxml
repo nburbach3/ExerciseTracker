@@ -19,11 +19,12 @@
         </Label>
     </top>
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: light-blue;" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3390FF;" BorderPane.alignment="CENTER">
             <children>
-                <Button layoutX="50.0" layoutY="200.0" mnemonicParsing="false" onAction="#displayInputExercises" style="-fx-background-color: black;" text="Enter Exercise Info" textFill="WHITE" fx:id="inputExercisesButton"/>
-                <Button layoutX="240.0" layoutY="200.0" mnemonicParsing="false" onAction="#displayStatistics" style="-fx-background-color: black;" text="View Statistics" textFill="WHITE" />
-                <Button layoutX="144.0" layoutY="283.0" mnemonicParsing="false" onAction="#clearDatabase" style="-fx-background-color: black;" text="Clear Database" textFill="WHITE" />
+                <Button fx:id="inputExercisesButton" layoutX="30.0" layoutY="200.0" mnemonicParsing="false" onAction="#displayInputExercises" style="-fx-background-color: black;" text="Enter Exercise Info" textFill="WHITE" />
+                <Button layoutX="223.0" layoutY="200.0" mnemonicParsing="false" onAction="#displayStatistics" style="-fx-background-color: black;" text="View Yearly Statistics" textFill="WHITE" />
+                <Button layoutX="30.0" layoutY="283.0" mnemonicParsing="false" onAction="#clearDatabase" style="-fx-background-color: black;" text="Clear Database" textFill="WHITE" />
+            <Button layoutX="223.0" layoutY="283.0" mnemonicParsing="false" onAction="#displayMonthlyStatistic" style="-fx-background-color: black;" text="View Monthly Statistics" textFill="WHITE" />
             </children>
         </AnchorPane>
     </center>

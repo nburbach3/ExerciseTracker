@@ -21,7 +21,7 @@
         </Label>
     </top>
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: light-blue;" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #3390FF;" BorderPane.alignment="CENTER">
             <children>
                 <ComboBox fx:id="exerciseCombo" layoutX="15.0" layoutY="75.0" prefWidth="150.0" />
                 <Label layoutX="55.0" layoutY="50.0" text="Exercise">

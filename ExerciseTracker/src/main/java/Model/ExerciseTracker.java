@@ -144,4 +144,108 @@ public class ExerciseTracker {
         }
         return setsList;
     }
+
+    public static ArrayList<String> getMonthDateInfo(String exercise) throws SQLException {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String yearMonth = dateParts[0] + "-" + dateParts[1];
+        String query = "SELECT Date FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + yearMonth + "%'" ;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet;
+        ArrayList<String> dateList = new ArrayList<>();
+        try {
+            connection = MySqlCon.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                dateList.add(resultSet.getString("Date"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            statement.close();
+            connection.close();
+        }
+        return dateList;
+    }
+
+    public static ArrayList<Double> getMonthWeightInfo(String exercise) throws SQLException {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String yearMonth = dateParts[0] + "-" + dateParts[1];
+        String query = "SELECT Weight FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + yearMonth + "%'" ;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet;
+        ArrayList<Double> weightList = new ArrayList<>();
+        try {
+            connection = MySqlCon.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                weightList.add(resultSet.getDouble("Weight"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            statement.close();
+            connection.close();
+        }
+        return weightList;
+    }
+
+    public static ArrayList<Integer> getMonthRepsInfo(String exercise) throws SQLException {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String yearMonth = dateParts[0] + "-" + dateParts[1];
+        String query = "SELECT Reps FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + yearMonth + "%'" ;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet;
+        ArrayList<Integer> repsList = new ArrayList<>();
+        try {
+            connection = MySqlCon.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                repsList.add(resultSet.getInt("Reps"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            statement.close();
+            connection.close();
+        }
+        return repsList;
+    }
+
+    public static ArrayList<Integer> getMonthSetsInfo(String exercise) throws SQLException {
+        long millis = System.currentTimeMillis();
+        java.sql.Date date = new java.sql.Date(millis);
+        String[] dateParts = date.toString().split("-");
+        String yearMonth = dateParts[0] + "-" + dateParts[1];
+        String query = "SELECT Sets FROM ExerciseLogs WHERE ExerciseName = '" + exercise + "' AND Date LIKE '%" + yearMonth + "%'" ;
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet;
+        ArrayList<Integer> setsList = new ArrayList<>();
+        try {
+            connection = MySqlCon.getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(query);
+            while (resultSet.next()) {
+                setsList.add(resultSet.getInt("Sets"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            statement.close();
+            connection.close();
+        }
+        return setsList;
+    }
 }

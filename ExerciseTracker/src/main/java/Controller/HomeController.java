@@ -40,6 +40,12 @@ public class HomeController {
         StatisticsController.displayStatistics();
     }
 
+    public void displayMonthlyStatistic(javafx.event.ActionEvent event) throws IOException {
+        Stage stage = (Stage) inputExercisesButton.getScene().getWindow();
+        stage.close();
+        StatisticsController.displayMonthStatistics();
+    }
+
     public void clearDatabase(javafx.event.ActionEvent event) throws IOException {
         Stage popupwindow = new Stage();
 
