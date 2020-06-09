@@ -34,3 +34,7 @@ Run Instructions:
 
 Currently you are able to see data based on the current month or current year.
 The data displayed is created by a formula based on the weight lifted, number of reps, and the number of sets performed.
+
+
+
+![Image of Statistics Page](https://github.com/nburbach3/ExerciseTracker/blob/master/ExerciseTracker/src/main/resources/Statistics.png)
