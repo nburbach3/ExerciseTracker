@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -53,7 +54,24 @@ public class InputExercisesController implements Initializable {
             add("Bench Press");
             add("Squat");
             add("Deadlift");
+            add("Leg Press");
+            add("Lunge");
+            add("Leg Extension");
+            add("Leg Curl");
+            add("Calf Raise");
+            add("Chest Fly");
+            add("push-up");
+            add("Lat Pull-Down");
+            add("Pull-Up");
+            add("Bent-Over Row");
+            add("Shoulder Press");
+            add("Lateral Raise");
+            add("Shrug");
+            add("Tricep Extension");
+            add("Bicep Curl");
+            add("Back Extension");
         }};
+        Collections.sort(exercisesList);
         exerciseCombo.getItems().addAll(exercisesList);
         exerciseCombo.getSelectionModel().select("Bench Press");
     }
